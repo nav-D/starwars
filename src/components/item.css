@@ -1,0 +1,33 @@
+.item-list-card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin: 16px;
+  width: 500px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-items: center;
+}
+
+.card-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-items: center;
+  /* Center horizontally */
+  padding: 20px;
+  text-align: center;
+  /* Center text horizontally */
+}
+
+.card-name {
+  font-size: 1.25rem;
+  margin: 0 0 8px;
+}
+
+.card-gender {
+  font-size: 1rem;
+  margin: 0;
+}
