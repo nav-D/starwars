@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import constants from '../config';
-import Item from '../components/ItemCard';
 import ItemList from '../components/ItemList';
 import Loader from '../components/Loader';
 import Modal from '../components/Modal';
@@ -15,11 +14,13 @@ const Characters = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [selectedCharacter, setSelectedCharacter] = useState(null);
+  const [speciesDetails, setSpeciesDetails] = useState(null);
+  const [planetDetails, setPlanetDetails] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const getCharacters = async (query = '') => {
     try {
       setLoading(true);
-      let url = constants.BASE_URL;
+      let url = constants.BASE_URL + 'people/';
       if (query) {
         url += '?search=' + query;
       }
@@ -37,10 +38,32 @@ const Characters = () => {
       setLoading(false);
     }
   }
-
   useEffect(() => {
     getCharacters();
   }, [currentPage]);
+  useEffect(() => {
+    const fetchDetails = async () => {
+      if (selectedCharacter) {
+        try {
+          setLoading(true);
+          const urlSpecies = selectedCharacter.species?.[0] || constants.BASE_URL + 'species/1';
+          const urlPlanet = selectedCharacter.homeworld || constants.BASE_URL + 'planets/1';
+          const [species, planet] = await Promise.all([axios.get(urlSpecies), axios.get(urlPlanet)]);
+          setSpeciesDetails(species.data);
+          setPlanetDetails(planet.data)
+          setLoading(false);
+        } catch (error) {
+          setError(error);
+          setLoading(false);
+          console.error('Error fetching item details:', error);
+        }
+      }
+    };
+
+    if (isModalOpen) {
+      fetchDetails();
+    }
+  }, [isModalOpen, selectedCharacter]);
 
   const handleCardClick = (item) => {
     setSelectedCharacter(item);
@@ -48,6 +71,7 @@ const Characters = () => {
   }
   const handleCloseModal = () => {
     setSelectedCharacter(null);
+    setSpeciesDetails(null);
     setIsModalOpen(false);
   }
 
@@ -61,7 +85,7 @@ const Characters = () => {
   if (error) {
     return <div>Error: {error.message}</div>;
   }
-
+  console.log(planetDetails);
   return (
     <div>
       <div className='page-heading'>
@@ -69,7 +93,7 @@ const Characters = () => {
       </div>
       <SearchBar onSearch={handleSearch} />
       <ItemList handleCardClick={handleCardClick} itemList={characters?.results} />
-      <Modal isOpen={isModalOpen} onClose={handleCloseModal} item={selectedCharacter} />
+      <Modal isOpen={isModalOpen} onClose={handleCloseModal} item={{ ...selectedCharacter, species_name: speciesDetails?.name, homeplanet: planetDetails?.name }} />
       {totalPages > 1 && (
         <div className="pagination">
           <button
