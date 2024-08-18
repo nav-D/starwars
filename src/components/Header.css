@@ -1,0 +1,98 @@
+/* Header container */
+header .header {}
+
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #333;
+  color: white;
+  z-index: 1000;
+  /* Ensure it stays above other content */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.header-container {
+  display: flex;
+  width: 100%;
+  max-width: 1200px;
+  /* Adjust to fit your design */
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  margin: 0 auto;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+}
+
+.logo:hover {
+  cursor: pointer;
+}
+
+.logo-img {
+  height: 40px;
+  /* Adjust height as needed */
+  width: auto;
+}
+
+.logo-img:hover {
+  cursor: pointer;
+}
+
+
+/* Navigation styles */
+.nav {
+  display: flex;
+}
+
+.nav-list {
+  list-style: none;
+  display: flex;
+  padding: 0;
+  margin: 0;
+}
+
+.nav-item {
+  margin: 0 15px;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: white;
+  font-size: 1rem;
+  pointer-events: auto;
+  transition: color 0.3s ease;
+  -webkit-transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+  color: #ff5c5c;
+  cursor: pointer;
+  /* Change to a color of your choice */
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .header-container {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .nav {
+    margin-top: 10px;
+  }
+
+  .nav-list {
+    flex-direction: column;
+  }
+
+  .nav-item {
+    margin: 5px 0;
+  }
+}
