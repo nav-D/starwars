@@ -79,38 +79,39 @@ const Characters = () => {
     getCharacters(query);
   };
 
-  if (loading) {
-    return <Loader />;
-  }
   if (error) {
     return <div>Error: {error.message}</div>;
   }
-  console.log(planetDetails);
   return (
     <div>
       <div className='page-heading'>
         <h1>Star Wars Characters</h1>
       </div>
       <SearchBar onSearch={handleSearch} />
-      <ItemList handleCardClick={handleCardClick} itemList={characters?.results} />
-      <Modal isOpen={isModalOpen} onClose={handleCloseModal} item={{ ...selectedCharacter, species_name: speciesDetails?.name, homeplanet: planetDetails?.name }} />
-      {totalPages > 1 && (
-        <div className="pagination">
-          <button
-            onClick={() => setCurrentPage(currentPage - 1)}
-            disabled={currentPage === 1}
-          >
-            Previous
-          </button>
-          <span>Page {currentPage} of {totalPages}</span>
-          <button
-            onClick={() => setCurrentPage(currentPage + 1)}
-            disabled={currentPage === totalPages}
-          >
-            Next
-          </button>
+      {loading ? <Loader /> :
+        <div>
+          <ItemList handleCardClick={handleCardClick} itemList={characters?.results} />
+          <Modal isOpen={isModalOpen} onClose={handleCloseModal} item={{ ...selectedCharacter, species_name: speciesDetails?.name, homeplanet: planetDetails?.name }} />
+          {totalPages > 1 && (
+            <div className="pagination">
+              <button
+                onClick={() => setCurrentPage(currentPage - 1)}
+                disabled={currentPage === 1}
+              >
+                Previous
+              </button>
+              <span>Page {currentPage} of {totalPages}</span>
+              <button
+                onClick={() => setCurrentPage(currentPage + 1)}
+                disabled={currentPage === totalPages}
+              >
+                Next
+              </button>
+            </div>
+          )}
         </div>
-      )}
+      }
+
     </div>
   )
 
